@@ -91,7 +91,7 @@ Show images with normal shading for a few small .dae files. -->
   Our approach to the triangle intersection algorithm is based on the Möller-Trumbore algorithm:
 </p>
 <ul>
-  <li><strong>Edge Calculation:</strong> We compute two edge vectors of the triangle by subtracting vertices. These vectors are help us determine the plane of the triangle and its orientation in space.</li>
+  <li><strong>Edge Calculation:</strong> We compute two edge vectors of the triangle by subtracting vertices. These vectors help us determine the plane of the triangle and its orientation in space.</li>
   <li><strong>Parallelism Check:</strong> A cross product combined with a dot product checks if the ray is parallel to the triangle's plane. If the result is near zero, they are parallel, and thus no intersection occurs.</li>
   <li><strong>Barycentric Coordinates:</strong> By calculating barycentric coordinates, the algorithm assesses whether the intersection point, if it exists, lies within the triangle's boundaries. This involves using cross products and dot products to solve for these coordinates.</li>
   <li><strong>Intersection Determination:</strong> If the barycentric coordinates show an intersection within the triangle, the distance to this point from the ray's origin is calculated. Valid intersections update the intersection data with the distance, the interpolated normal at the intersection, and material properties for shading.</li>
@@ -144,7 +144,7 @@ Compare rendering times on a few scenes with moderately complex geometries with 
 <ul>
   <li><strong>Leaf Node Creation:</strong> If the number of primitives at the current node is less than or equal to the maximum leaf size, a leaf node is created. This node encloses all the primitives within its bounding box.</li>
   <li><strong>Splitting Axis Determination:</strong> For internal nodes, the algorithm calculates the node's bounding box and determines the axis (x, y, or z) along which to split based on the greatest extent of the bounding box. This heuristic aims to split the primitives into two roughly equal groups, reducing the volume of each child's bounding box.</li>
-  <li><strong>Primitives Sorting:</strong> Primitives are sorted based on their centroid's coordinate along the chosen split axis. This step is allows us to divide the primitives into two groups that will be enclosed by the child nodes.</li>
+  <li><strong>Primitives Sorting:</strong> Primitives are sorted based on their centroid's coordinate along the chosen split axis. This step allows us to divide the primitives into two groups that will be enclosed by the child nodes.</li>
   <li><strong>Recursive Construction:</strong> The algorithm recursively applies these steps to construct left and right child nodes, splitting the sorted primitives at the median point.</li>
 </ul>
 <p>
@@ -300,7 +300,7 @@ Compare the results between uniform hemisphere sampling and lighting sampling in
   Compare the results between uniform hemisphere sampling and lighting sampling in a one-paragraph analysis.
 </h3>
 <p>
-    Comparing uniform hemisphere sampling and light sampling shows differences in the quality of the rendered images. Uniform hemisphere sampling, which equally considers all directions for light rays bouncing off surfaces, results in a more diffused illumination with much more visible noise due to its non-discriminatory nature. This method can often lead to slower convergence to the final image quality, requiring more samples to reduce the noise. In contrast, light sampling specifically targets light sources when choosing the direction of bounced rays, which can significantly reduce noise and provide a clearer and more accurate depiction of direct lighting effects and shadows. The images with light sampling exhibit sharper shadows and better-defined lighting, indicating a more efficient rendering process that can achieve higher quality with fewer samples compared to uniform hemisphere sampling.
+    Comparing uniform hemisphere sampling and light sampling shows differences in the quality of the rendered images. Uniform hemisphere sampling, which equally considers all directions for light rays bouncing off surfaces, results in a more diffused illumination with much more visible noise. This method can require more samples to reduce the noise. In contrast, light sampling specifically targets light sources when choosing the direction of bounced rays, which can significantly reduce noise and provide a clearer and more accurate depiction of direct lighting effects and shadows. The images with light sampling exhibit sharper shadows and better-defined lighting, indicating a more efficient rendering process that can achieve higher quality with fewer samples compared to uniform hemisphere sampling.
 </p>
 
 <br>
@@ -321,7 +321,7 @@ You will probably want to use the instructional machines for the above renders i
     Our `at_least_one_bounce_radiance` function calculates the radiance received at a point after at least one bounce of light, incorporating both direct lighting and recursive calls for additional bounces. Initially, it checks for recursion termination if the ray depth is zero. Using the surface normal at the intersection point, it sets up a coordinate system to transform directions between world and object space.
 </p>
 <p>
-    The function calculates direct lighting by calling `one_bounce_radiance`, then samples a new direction using the BSDF's `sample_f` method. If the sampling is successful and the ray continues to intersect the scene, it recursively calls itself with a new ray in the sampled direction. This new ray accounts for indirect lighting by accumulating contributions from further bounces. Ray depth is decremented with each recursion, and we have built in Russian Roulette termination. Furthermore, contributions from indirect bounces are accumulated based on the `isAccumBounces` flag. 
+    The function calculates direct lighting by calling `one_bounce_radiance`, then samples a new direction using the BSDF's `sample_f` method. If the sampling is successful and the ray continues to intersect the scene, it recursively calls itself with a new ray in the sampled direction. This new ray accounts for indirect lighting by accumulating contributions from further bounces. Ray depth is decremented with each recursion. We also have built in Russian Roulette termination with termination probability .3 which assists with runtime while maintaining a high quality rendering. Furthermore, contributions from indirect bounces are accumulated based on the `isAccumBounces` flag. 
 </p>
 <br>
 
